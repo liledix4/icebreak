@@ -2,7 +2,7 @@ import { readTextFile } from '../modules/js_xhr_ajax/xhr_ajax.min.js';
 
 const statuses = [ 'ongoing', 'stopped', 'done', 'pending', 'improve' ];
 
-readTextFile( { url: '../../data.json' }, rawData => {
+readTextFile( { url: 'https://liledix4.github.io/icebreak/data.json' }, rawData => {
   const json = JSON.parse( rawData );
   const mainBlock = document.getElementById( 'main_block' );
   mainBlock.innerHTML += getHTMLFromTasks( json.tasks );
