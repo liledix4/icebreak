@@ -1,0 +1,72 @@
+@import url( 'https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap' );
+* {
+  box-sizing: border-box;
+}
+html {
+  color: white;
+  text-shadow: 0 .125em .25em #00000088;
+  font-family: 'Exo 2', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+body {
+  background-image: url( 'https://yt3.googleusercontent.com/OT13M0OhPUH4VXQAu8jdsEsR2jIHg0Rh0E4meJYdaNylagOBjovleJ4IU7PRuLmRVMTy90pZWw=w10000' );
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  margin: 2em;
+}
+h1 {
+  font-size: 3em;
+  margin: 0;
+  margin-bottom: .5em;
+}
+#main_block {
+  position: relative;
+  text-align: center;
+  backdrop-filter: blur( 1em );
+  background-color: #00000044;
+  padding: 2em;
+  border-radius: 2em;
+  max-width: 40em;
+  margin: 8em auto;
+  overflow: hidden;
+}
+.task {
+  display: flex;
+  gap: .5em;
+  border-top: .125em solid #ffffff44;
+  padding: 1em 0;
+  text-align: left;
+}
+.task > .emoji {
+  font-size: 3em;
+  line-height: 1em;
+  text-align: center;
+}
+.task > .info {
+  flex-grow: 1;
+}
+.task > .info > .subtasks {
+  margin-top: .5em;
+}
+.task > .info > .title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.task > .info > .status > span {
+  font-style: italic;
+}
+.task > .info > .progress {
+  text-align: center;
+  background-color: #00000066;
+  padding: .5em 1em;
+  border-radius: 10000em;
+  margin: .5em 0;
+}
+.task > .info > .last_update {
+  float: right;
+  text-align: right;
+  font-size: .8em;
+  margin-left: .5em;
+  margin-bottom: .5em;
+}

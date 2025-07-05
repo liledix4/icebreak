@@ -1,0 +1,90 @@
+{
+  "$schema": "./data.schema.json",
+  "more_to_come": true,
+  "tasks": [
+    {
+      "title": "Reinstalling programs",
+      "status": "ongoing",
+      "progress": "100+ to go",
+      "progress_precision": false,
+      "last_update": "2025.07.05",
+      "subtasks": [
+        {
+          "title": "I need more correct way of counting",
+          "emoji": "⚠️"
+        }
+      ]
+    },
+    {
+      "title": "Reinstalling virtual musical instruments",
+      "status": "ongoing",
+      "progress": "157 to go",
+      "progress_precision": true,
+      "last_update": "2025.07.05"
+    },
+    {
+      "title": "Changing format of local notes (from Markdown and TXT to Q, my own format)",
+      "status": "ongoing",
+      "progress": "423 to go",
+      "progress_precision": true,
+      "last_update": "2025.07.05"
+    },
+    {
+      "title": "Verifying quality of classic Doctor Who episodes (quick rewatching)",
+      "emoji": "🔷",
+      "status": "ongoing",
+      "subtasks": [
+        {
+          "title": "4th Doctor",
+          "status": "ongoing",
+          "progress": "112 episodes to go",
+          "progress_precision": true,
+          "last_update": "2025.07.05"
+        },
+        {
+          "title": "3rd Doctor",
+          "status": "pending",
+          "progress": "124 episodes to go",
+          "progress_precision": true,
+          "last_update": "2025.07.05"
+        },
+        {
+          "title": "2nd Doctor",
+          "status": "pending",
+          "progress": "119 episodes to go",
+          "progress_precision": true,
+          "last_update": "2025.07.05"
+        },
+        {
+          "title": "1st Doctor",
+          "status": "pending",
+          "progress": "128 episodes to go",
+          "progress_precision": true,
+          "last_update": "2025.07.05"
+        }
+      ]
+    },
+    {
+      "title": "liledix4 Ice Break: Webpage Version",
+      "status": "improve",
+      "last_update": "2025.07.05",
+      "subtasks": [
+        {
+          "title": "JavaScript: turn \"statuses\" into an array of objects",
+          "status": "pending",
+          "last_update": "2025.07.05"
+        },
+        {
+          "title": "Progress bars, maximum/initial values, incrementing/decrementing",
+          "status": "pending",
+          "last_update": "2025.07.05"
+        },
+        {
+          "title": "Task descriptions",
+          "status": "pending",
+          "last_update": "2025.07.05"
+        }
+      ]
+    }
+  ]
+}
