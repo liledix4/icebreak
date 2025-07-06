@@ -3,30 +3,45 @@
   "more_to_come": true,
   "tasks": [
     {
-      "title": "Reinstalling programs",
+      "title": "Reinstalling virtual musical instruments",
+      "emoji": "🎹",
       "status": "ongoing",
-      "progress": "100+ to go",
-      "progress_precision": false,
+      "progress": 153,
+      "progress_change": -4,
+      "progress_element": "instruments",
+      "progress_precision": true,
+      "progress_goal": 170,
+      "progress_goal_precision": "more",
+      "progress_direction": "-",
+      "last_update": "2025.07.06"
+    },
+    {
+      "title": "Reinstalling programs",
+      "emoji": "💾",
+      "status": "ongoing",
+      "progress": 100,
+      "progress_precision": "more",
+      "progress_element": "programs",
+      "progress_direction": "-",
       "last_update": "2025.07.05",
       "subtasks": [
         {
           "title": "I need more correct way of counting",
+          "description": "It would allow more precise progress count",
           "emoji": "⚠️"
         }
       ]
     },
     {
-      "title": "Reinstalling virtual musical instruments",
-      "status": "ongoing",
-      "progress": "157 to go",
-      "progress_precision": true,
-      "last_update": "2025.07.05"
-    },
-    {
       "title": "Changing format of local notes (from Markdown and TXT to Q, my own format)",
+      "description": "Helpful string for Everything: <kbd>&lt;&lt;ext:q&gt;|&lt;ext:md \".q.md\"&gt;&gt; !path:\\VSCodium\\User\\History\\-</kbd>",
+      "emoji": "🗒️",
       "status": "ongoing",
-      "progress": "423 to go",
+      "progress": 423,
+      "progress_goal": 1008,
+      "progress_element": "note files",
       "progress_precision": true,
+      "progress_direction": "-",
       "last_update": "2025.07.05"
     },
     {
@@ -35,54 +50,79 @@
       "status": "ongoing",
       "subtasks": [
         {
+          "title": "7th Doctor",
+          "status": "done"
+        },
+        {
+          "title": "6th Doctor",
+          "status": "done"
+        },
+        {
+          "title": "5th Doctor",
+          "status": "done"
+        },
+        {
           "title": "4th Doctor",
           "status": "ongoing",
-          "progress": "112 episodes to go",
+          "progress": 112,
+          "progress_goal": 186,
+          "progress_element": "episodes",
           "progress_precision": true,
+          "progress_direction": "-",
           "last_update": "2025.07.05"
         },
         {
           "title": "3rd Doctor",
           "status": "pending",
-          "progress": "124 episodes to go",
+          "progress": 124,
+          "progress_goal": 128,
+          "progress_element": "episodes",
           "progress_precision": true,
+          "progress_direction": "-",
           "last_update": "2025.07.05"
         },
         {
           "title": "2nd Doctor",
           "status": "pending",
-          "progress": "119 episodes to go",
+          "progress": 119,
+          "progress_goal": 119,
+          "progress_element": "episodes",
           "progress_precision": true,
+          "progress_direction": "-",
           "last_update": "2025.07.05"
         },
         {
           "title": "1st Doctor",
           "status": "pending",
-          "progress": "128 episodes to go",
+          "progress": 128,
+          "progress_goal": 128,
+          "progress_element": "episodes",
           "progress_precision": true,
+          "progress_direction": "-",
           "last_update": "2025.07.05"
         }
       ]
     },
     {
       "title": "liledix4 Ice Break: Webpage Version",
-      "status": "improve",
-      "last_update": "2025.07.05",
+      "description": "It was started as a static Markdown file, but evolved into JSON that is parsed with JavaScript for frontend",
+      "status": "done",
+      "last_update": "2025.07.06",
       "subtasks": [
         {
           "title": "JavaScript: turn \"statuses\" into an array of objects",
-          "status": "pending",
-          "last_update": "2025.07.05"
+          "status": "done",
+          "last_update": "2025.07.06"
         },
         {
           "title": "Progress bars, maximum/initial values, incrementing/decrementing",
-          "status": "pending",
-          "last_update": "2025.07.05"
+          "status": "done",
+          "last_update": "2025.07.06"
         },
         {
           "title": "Task descriptions",
-          "status": "pending",
-          "last_update": "2025.07.05"
+          "status": "done",
+          "last_update": "2025.07.06"
         }
       ]
     }
