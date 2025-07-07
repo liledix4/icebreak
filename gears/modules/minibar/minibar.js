@@ -19,7 +19,7 @@ const moreBlocks = [
         { image: 'https://i.ytimg.com/vi/K6iwrqZ2EEY/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=K6iwrqZ2EEY' },
         { image: 'https://i.ytimg.com/vi/pyooQjRInlE/hqdefault.jpg', url: 'https://www.youtube.com/watch?v=pyooQjRInlE' },
       ] },
-      { text: 'GitHub', emoji: '🦑', url: 'https://github.com/@liledix4' },
+      { text: 'GitHub', emoji: '🦑', url: 'https://github.com/liledix4' },
     ],
   },
   {
