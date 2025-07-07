@@ -6,8 +6,8 @@
       "title": "Reinstalling virtual musical instruments",
       "emoji": "🎹",
       "status": "ongoing",
-      "progress": 153,
-      "progress_change": -4,
+      "progress": 152,
+      "progress_checkpoint": 157,
       "progress_element": "instruments",
       "progress_precision": true,
       "progress_goal": 170,
@@ -51,15 +51,30 @@
       "subtasks": [
         {
           "title": "7th Doctor",
-          "status": "done"
+          "status": "done",
+          "progress": 0,
+          "progress_goal": 59,
+          "progress_element": "episodes",
+          "progress_precision": true,
+          "progress_direction": "-"
         },
         {
           "title": "6th Doctor",
-          "status": "done"
+          "status": "done",
+          "progress": 0,
+          "progress_goal": 38,
+          "progress_element": "episodes",
+          "progress_precision": true,
+          "progress_direction": "-"
         },
         {
           "title": "5th Doctor",
-          "status": "done"
+          "status": "done",
+          "progress": 0,
+          "progress_goal": 89,
+          "progress_element": "episodes",
+          "progress_precision": true,
+          "progress_direction": "-"
         },
         {
           "title": "4th Doctor",

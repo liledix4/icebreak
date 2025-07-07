@@ -50,6 +50,7 @@ h1, .task {
   border-radius: 1.5rem;
   margin-bottom: 2rem;
   overflow: hidden;
+  transition: background .4s;
 }
 .task .task {
   backdrop-filter: none;
@@ -60,9 +61,13 @@ h1, .task {
 .task:last-child {
   margin-bottom: 0;
 }
+h1:hover,
+.task:hover {
+  background-color: #00000088;
+}
 
 
-#main_block {
+#main_wrapper {
   position: relative;
   text-align: center;
   max-width: 40em;
@@ -110,7 +115,8 @@ h1, .task {
 .task > .progress {
   position: relative;
   text-align: center;
-  background-color: #00000044;
+  background-color: #0088ff44;
+  background-image: linear-gradient( -4deg, #0044ff44 20%, transparent 50% );
   box-shadow: inset 0 .125em .25em #00000044;
   padding: .5em 1em;
   border-radius: 10000em;
@@ -124,9 +130,8 @@ h1, .task {
   font-weight: bold;
 }
 .task > .progress > span.change {
-  color: #00f444;
   font-weight: bold;
-  border: 2px solid #009444;
+  border: 2px solid #ffffff44;
   box-shadow:
     0 .125em .25em #00000044,
     inset 0 .125em .25em #00000044;
@@ -134,19 +139,31 @@ h1, .task {
   padding: .25em .5em;
   margin: 0 .125em;
 }
+.task > .progress > span.change.positive {
+  color: #00f444;
+  border-color: #00f44488;
+}
+.task > .progress > span.change.negative {
+  color: #ff66bb;
+  border-color: #ff44aaaa;
+}
 .task > .progress > .bar {
   position: absolute;
   top: 0; bottom: 0; left: 0;
+  box-shadow:
+    inset 0 .75em .75em #ffffff66,
+    inset 0 -.5em .5em #00000044;
   background-color: #009444;
   background-image: linear-gradient(-150deg, #ffffffaa 30%, transparent);
   background-position: left center;
-  opacity: .7;
+  opacity: .8;
   filter: saturate( 5 );
   z-index: -1;
   border-top-right-radius: 10000em;
   border-bottom-right-radius: 10000em;
 }
 .task > .progress > .bar.imprecise {
+  box-shadow: none;
   background-color: transparent;
   background-image: url( '../images/progress_imprecise.svg' );
   background-size: calc( 100% / 7 ) 100%;

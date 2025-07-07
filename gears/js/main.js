@@ -1,16 +1,10 @@
+import { config } from '../../config.js';
 import { readTextFile } from '../modules/js_xhr_ajax/xhr_ajax.min.js';
 
-const statuses = [
-  { id: 'ongoing', text: 'Ongoing', emoji: '▶️' },
-  { id: 'stopped', text: 'Stopped', emoji: '🛑' },
-  { id: 'done', text: 'Done', emoji: '✅' },
-  { id: 'pending', text: 'Pending', emoji: '⏱️' },
-  { id: 'improve', text: 'Done, but improvements can be possible', emoji: '⬆️' },
-];
 
-readTextFile( { url: './data.json' }, rawData => {
+readTextFile( { url: config.jsonDataSource }, rawData => {
   const json = JSON.parse( rawData );
-  const mainBlock = document.getElementById( 'main_block' );
+  const mainBlock = document.querySelector( config.mainWrapper );
   mainBlock.innerHTML += getHTMLFromTasks( json.tasks );
   if ( json.more_to_come && json.more_to_come === true )
     mainBlock.innerHTML += getHTMLFromTasks( [ {
@@ -18,6 +12,7 @@ readTextFile( { url: './data.json' }, rawData => {
       emoji: '❓',
     } ] );
 } );
+
 
 function getHTMLFromTasks( tasksArray ) {
   let taskHTML = '';
@@ -43,9 +38,9 @@ function getHTMLFromTasks( tasksArray ) {
       html.emoji = task.emoji;
 
     if ( task.status ) {
-      const statusObjects = statuses.filter( obj => obj.id === task.status );
-      if ( statusObjects.length === 1 ) {
-        const statusObject = statusObjects[ 0 ];
+      const statusObjects = Object.keys( config.statuses ).indexOf( task.status );
+      if ( statusObjects >= 0 ) {
+        const statusObject = config.statuses[ task.status ];
         html.status = `<div class='status ${ task.status }'>`;
         if ( html.emoji.length === 0 )
           html.emoji = statusObject.emoji;
@@ -55,11 +50,28 @@ function getHTMLFromTasks( tasksArray ) {
       }
     }
 
-    if ( task.progress ) {
+    if ( task.progress !== undefined ) {
       html.progress = `<span class='number current'>${ task.progress }</span>`;
 
-      if ( task.progress_change )
-        html.progress += ` <span class='change'>${ task.progress_change }</span>`;
+      if ( task.progress_checkpoint || task.progress_change ) {
+        let additionalClass = '';
+        let difference = 0;
+
+        if ( task.progress_change === undefined )
+          difference = task.progress - task.progress_checkpoint;
+        else
+          difference = task.progress_change;
+
+        if ( task.progress_direction === '+' && difference > 0 || task.progress_direction === '-' && difference < 0 )
+          additionalClass = ' positive';
+        else if ( task.progress_direction === '+' && difference < 0 || task.progress_direction === '-' && difference > 0 )
+          additionalClass = ' negative';
+
+        if ( difference > 0 )
+          difference = '+' + difference;
+
+        html.progress += ` <span class='change${ additionalClass }'>${ difference }</span>`;
+      }
       if ( task.progress_goal ) {
         let progressPrefix = '';
         if ( task.progress_goal_precision && task.progress_goal_precision !== true ) {
