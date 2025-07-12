@@ -15,4 +15,29 @@ export const config = {
   mainWrapper: '#main_wrapper',
     // Query selector of an HTML element where the script must add new blocks.
     // See CSS selectors: https://developer.mozilla.org/docs/Web/CSS/CSS_selectors
+  html: {
+    defaultReplacement: '{{REPLACE}}',
+    taskBlock: `
+      <div class='icebreak_block task'>
+        <div class='info'>
+          <div class='emoji'>{{EMOJI}}</div>
+          <div class='center'>
+            {{TITLE}}
+            {{DESCRIPTION}}
+          </div>
+          {{LASTUPDATE}}
+        </div>
+        {{STATUS}}
+        {{PROGRESS}}
+        {{SUBTASKS}}
+      </div>`,
+    title: "<div class='title'>{{REPLACE}}</div>",
+    description: "<div class='description'>{{REPLACE}}</div>",
+    emoji: '{{REPLACE}}',
+    status: "",
+    progress: "",
+    progress_bar: "",
+    last_update: "<div class='last_update'>Last update:<br>{{REPLACE}}</div>",
+    subtasks: "<div class='subtasks'>{{REPLACE}}</div>",
+  },
 }

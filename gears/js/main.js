@@ -1,17 +1,40 @@
 import { config } from '../../config.js';
 import { readTextFile } from '../modules/js_xhr_ajax/xhr_ajax.min.js';
+import { replaceKeyword } from './html_replace.js';
+import { addPreview } from './preview.js';
 
+
+let latestUpdateDate;
 
 readTextFile( { url: config.jsonDataSource }, rawData => {
   const json = JSON.parse( rawData );
   const mainBlock = document.querySelector( config.mainWrapper );
   mainBlock.innerHTML += getHTMLFromTasks( json.tasks );
+  document.querySelector( '#main_wrapper .icebreak_block.main .latest_update' ).innerText = latestUpdateDate.toLocaleDateString( undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  } );
   if ( json.more_to_come && json.more_to_come === true )
     mainBlock.innerHTML += getHTMLFromTasks( [ {
       title: 'And more?',
       emoji: '❓',
     } ] );
+  // addPreview();
 } );
+
+
+function htmlReplace( initialString, replaceTo ) {
+  if ( config.html.defaultReplacement !== undefined )
+    return replaceKeyword(
+      initialString, replaceTo, config.html.defaultReplacement
+    );
+  else
+    return replaceKeyword(
+      initialString, replaceTo
+    );
+}
 
 
 function getHTMLFromTasks( tasksArray ) {
@@ -29,13 +52,13 @@ function getHTMLFromTasks( tasksArray ) {
     };
 
     if ( task.title )
-      html.title = `<div class='title'>${ task.title }</div>`;
+      html.title = htmlReplace( config.html.title, task.title );
 
     if ( task.description )
-      html.description = `<div class='description'>${ task.description }</div>`;
+      html.description = htmlReplace( config.html.description, task.description );
 
     if ( task.emoji )
-      html.emoji = task.emoji;
+      html.emoji = htmlReplace( config.html.emoji, task.emoji );
 
     if ( task.status ) {
       const statusObjects = Object.keys( config.statuses ).indexOf( task.status );
@@ -118,27 +141,33 @@ function getHTMLFromTasks( tasksArray ) {
 
     if ( task.last_update ) {
       const d = task.last_update.split( '.' );
-      const date = new Date( d[0], d[1] - 1, d[2] ).toDateString();
-      html.last_update = `<div class='last_update'>Last update:<br>${ date }</div>`;
+      const date = new Date( d[0], d[1] - 1, d[2] );
+      const dateString = date.toLocaleDateString( undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'short',
+      } );
+
+      html.last_update = htmlReplace( config.html.last_update, dateString );
+
+      if ( latestUpdateDate === undefined || latestUpdateDate.getTime() < date.getTime() )
+        latestUpdateDate = date;
     }
 
     if ( task.subtasks )
-      html.subtasks = `<div class='subtasks'>${ getHTMLFromTasks( task.subtasks ) }</div>`;
+      html.subtasks = htmlReplace( config.html.subtasks, getHTMLFromTasks( task.subtasks ) );
 
-    taskHTML += `
-      <div class='task'>
-        <div class='info'>
-          <div class='emoji'>${ html.emoji }</div>
-          <div class='center'>
-            ${ html.title }
-            ${ html.description }
-            </div>
-          ${ html.last_update }
-        </div>
-        ${ html.status }
-        ${ html.progress }
-        ${ html.subtasks }
-      </div>`;
+    taskHTML += htmlReplace( config.html.taskBlock, {
+      emoji: html.emoji,
+      title: html.title,
+      description: html.description,
+      lastupdate: html.last_update,
+      status: html.status,
+      progress: html.progress,
+      subtasks: html.subtasks,
+    } );
+
   } );
 
   return taskHTML;

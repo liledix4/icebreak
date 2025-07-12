@@ -1,3 +1,6 @@
+import { centerElement, draggable, fixPosition } from './drag_element.js';
+
+
 ( async function() {
 
 
@@ -44,7 +47,6 @@ let html = {
   links: ``,
   liledix4: `<a class='toolbar_element main' href='https://liledix4.github.io'><span class='text'>liledix4</span></a>`,
   time: `<div class='time'></div>`,
-  corners: `<div class='corner_filler left'></div><div class='corner_filler right'></div>`,
   toolbarFiller: `<div class='filler'></div>`,
   moreButton: `<div class='toolbar_element more'><span class='text'>More ▼</span></div>`,
 };
@@ -74,14 +76,14 @@ minibar.innerHTML = `
     ${ html.toolbarFiller }
     ${ html.moreButton }
   </div>
-  ${ html.corners }
   <div class='more_wrapper'></div>
+  <div class='below_block_messages_wrapper'></div>
   <div class='block_messages_wrapper'>
     <div class='title'>
       <div class='text'></div>
-      <div class='close'></div>
     </div>
     <div class='messages'></div>
+    <div class='close'></div>
   </div>
 `;
 
@@ -250,32 +252,48 @@ moreBlocks.forEach( section => {
 
   more.innerHTML += `
     <div class='section_wrapper'>
-      <h2 class='section_title'>${ section.section }</h2>
+      <div class='section_title'>${ section.section }</div>
       <div class='blocks_wrapper'>${ htmlSectionBlocks }</div>
     </div>`;
 } );
 
 let moreBlocks_MessagesRailsIntervals = [];
 
-minibar.querySelector( '.block_messages_wrapper .close' ).addEventListener( 'click', () => {
-  minibar.querySelector( '.block_messages_wrapper' ).classList.remove( 'show' );
+
+function closeBlocksWindow() {
+  minibar.classList.remove( 'show_blocks_window' );
   minibar.querySelector( '.block_messages_wrapper .title .text' ).innerHTML = '';
   minibar.querySelector( '.block_messages_wrapper .messages' ).innerHTML = '';
-} );
+}
+
+
+minibar.querySelector( '.below_block_messages_wrapper' ).addEventListener( 'click', closeBlocksWindow );
+minibar.querySelector( '.block_messages_wrapper .close' ).addEventListener( 'click', closeBlocksWindow );
 more.querySelectorAll( '.block .interactive_corner' ).forEach( corner => {
-  corner.addEventListener( 'click', event => {
+  corner.addEventListener( 'click', () => {
     const parentBlock = corner.closest( '.block' );
     const rails = parentBlock.querySelector( '.message_rails' );
     const wrapper = minibar.querySelector( '.block_messages_wrapper' );
-    wrapper.classList.add( 'show' );
+    minibar.classList.add( 'show_blocks_window' );
     wrapper.querySelector( '.title .text' ).innerHTML = parentBlock.querySelector( '.title' ).innerText;
     wrapper.querySelector( '.messages' ).innerHTML = rails.innerHTML;
     wrapper.querySelectorAll( '.messages .message' ).forEach( message => {
-      message.style.borderColor = parentBlock.style.backgroundColor;
       message.style.backgroundColor = parentBlock.style.backgroundColor;
     } );
+    if ( !wrapper.getAttribute( 'style' ) )
+      centerElement( wrapper );
   } );
 } );
+
+
+draggable(
+  minibar.querySelector( '.block_messages_wrapper .title' ),
+  minibar.querySelector( '.block_messages_wrapper' )
+);
+window.addEventListener( 'resize', () =>
+  fixPosition( minibar.querySelector( '.block_messages_wrapper' ) )
+);
+
 
 more.querySelectorAll( '.message_rails' ).forEach( ( messageRails, index ) => {
   setTimeout( () => {

@@ -40,79 +40,93 @@ h1 {
 }
 
 
-h1, .task {
-  background-color: #00000044;
-  border-top: .125rem solid #ffffff44;
-  border-bottom: .125rem solid #00000044;
-  box-shadow: 0 .5rem 1rem #00000066;
-  backdrop-filter: blur( 2rem );
-  padding: 1rem;
-  border-radius: 1.5rem;
-  margin-bottom: 2rem;
-  overflow: hidden;
-  transition: background .4s;
-}
-.task .task {
-  backdrop-filter: none;
-  background-color: #00000022;
-  box-shadow: 0 .25rem .5rem #00000044;
-  margin-bottom: 1rem;
-}
-.task:last-child {
-  margin-bottom: 0;
-}
-h1:hover,
-.task:hover {
-  background-color: #00000088;
-}
-
-
 #main_wrapper {
   position: relative;
-  text-align: center;
   max-width: 40em;
   margin: 8em auto;
 }
-.task {
+
+
+.icebreak_block {
+  background-color: #00000044;
+  border-top: .125em solid #ffffff44;
+  border-bottom: .125em solid #00000044;
+  box-shadow: 0 .5em 1em #00000066;
+  backdrop-filter: blur( 2em );
+  padding: 1em;
+  border-radius: 1.5em;
+  margin: 0 auto;
+  margin-bottom: 2em;
+  max-width: 40em;
+  overflow: hidden;
+  transition: background .4s;
+}
+.icebreak_block.task {
   display: flex;
   flex-direction: column;
   gap: .5em;
   text-align: left;
 }
-.task > .info {
+.icebreak_block .icebreak_block {
+  backdrop-filter: none;
+  background-color: #00000022;
+  box-shadow: 0 .25em .5em #00000044;
+  margin-bottom: 1em;
+}
+.icebreak_block:last-child {
+  margin-bottom: 0;
+}
+.icebreak_block:hover {
+  background-color: #00000088;
+}
+
+
+.icebreak_block.main {
+  text-align: center;
+}
+.icebreak_block.main span.icons {
+  font-size: 4em;
+}
+.icebreak_block.main h1,
+.icebreak_block.main p {
+  margin: 0;
+}
+
+
+.icebreak_block.task > .info {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: .5em;
 }
-.task > .info > .emoji {
+.icebreak_block.task > .info > .emoji {
   font-size: 3em;
   line-height: 1em;
   text-align: center;
 }
-.task > .info > .center {
+.icebreak_block.task > .info > .center {
   flex-grow: 1;
 }
-.task > .info > .center > .title {
+.icebreak_block.task > .info > .center > .title {
   font-size: 1.5em;
   font-weight: bold;
 }
-.task > .info > .center > .description {
+.icebreak_block.task > .info > .center > .description {
   font-size: .8em;
   margin-top: .25em;
 }
-.task > .info > .last_update {
+.icebreak_block.task > .info > .last_update {
   text-align: right;
   font-size: .8em;
   white-space: nowrap;
 }
-.task > .status {
+.icebreak_block.task > .status {
   text-align: center;
 }
-.task > .status > span {
+.icebreak_block.task > .status > span {
   font-style: italic;
 }
-.task > .progress {
+.icebreak_block.task > .progress {
   position: relative;
   text-align: center;
   background-color: #0088ff44;
@@ -123,15 +137,15 @@ h1:hover,
   vertical-align: middle;
   overflow: hidden;
 }
-.task > .progress > span.number {
+.icebreak_block.task > .progress > span.number {
   font-size: 1.25em;
 }
-.task > .progress > span.number.current {
+.icebreak_block.task > .progress > span.number.current {
   font-weight: bold;
 }
-.task > .progress > span.change {
+.icebreak_block.task > .progress > span.change {
   font-weight: bold;
-  border: 2px solid #ffffff44;
+  border: .125em solid #ffffff44;
   box-shadow:
     0 .125em .25em #00000044,
     inset 0 .125em .25em #00000044;
@@ -139,15 +153,15 @@ h1:hover,
   padding: .25em .5em;
   margin: 0 .125em;
 }
-.task > .progress > span.change.positive {
+.icebreak_block.task > .progress > span.change.positive {
   color: #00f444;
   border-color: #00f44488;
 }
-.task > .progress > span.change.negative {
+.icebreak_block.task > .progress > span.change.negative {
   color: #ff66bb;
   border-color: #ff44aaaa;
 }
-.task > .progress > .bar {
+.icebreak_block.task > .progress > .bar {
   position: absolute;
   top: 0; bottom: 0; left: 0;
   box-shadow:
@@ -162,7 +176,7 @@ h1:hover,
   border-top-right-radius: 10000em;
   border-bottom-right-radius: 10000em;
 }
-.task > .progress > .bar.imprecise {
+.icebreak_block.task > .progress > .bar.imprecise {
   box-shadow: none;
   background-color: transparent;
   background-image: url( '../images/progress_imprecise.svg' );
@@ -174,6 +188,25 @@ h1:hover,
   0% { background-position: 0% center; }
   100% { background-position: 100% center; }
 }
-.task > .subtasks {
+.icebreak_block.task > .subtasks {
+  padding: .5em;
+}
+
+
+#block_preview {
+  position: fixed;
+  top: 4rem; left: 4rem;
+  border-top: .125rem solid #ffffff44;
+  border-bottom: .125rem solid #00000044;
+  box-shadow: 0 .5rem 1rem #00000066;
+  background-color: #00000044;
+  border-radius: 1rem;
+  backdrop-filter: blur( 2rem );
   padding: .5rem;
+  height: 15rem;
+  width: 10rem;
+  overflow: hidden;
+  font-size: .125rem;
+  user-select: none;
+  pointer-events: none;
 }

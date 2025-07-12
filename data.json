@@ -3,17 +3,55 @@
   "more_to_come": true,
   "tasks": [
     {
+      "title": "Changing format of local notes (from Markdown and TXT to Q, my own format)",
+      "description": "Helpful string for Everything: <kbd>&lt;&lt;ext:q&gt;|&lt;ext:md \".q.md\"&gt;&gt; !path:\\VSCodium\\User\\History\\-</kbd>",
+      "emoji": "🗒️",
+      "status": "ongoing",
+      "progress": 299,
+      "progress_checkpoint": 423,
+      "progress_goal": 1008,
+      "progress_element": "note files",
+      "progress_precision": true,
+      "progress_direction": "-",
+      "last_update": "2025.07.11"
+    },
+    {
       "title": "Reinstalling virtual musical instruments",
       "emoji": "🎹",
-      "status": "ongoing",
-      "progress": 152,
-      "progress_checkpoint": 157,
-      "progress_element": "instruments",
-      "progress_precision": true,
-      "progress_goal": 170,
-      "progress_goal_precision": "more",
-      "progress_direction": "-",
-      "last_update": "2025.07.06"
+      "subtasks": [
+        {
+          "title": "Step 1 / P",
+          "status": "ongoing",
+          "progress": 152,
+          "progress_checkpoint": 157,
+          "progress_element": "instruments",
+          "progress_precision": true,
+          "progress_goal": 170,
+          "progress_goal_precision": "more",
+          "progress_direction": "-",
+          "last_update": "2025.07.10"
+        },
+        {
+          "title": "Step 2 / I",
+          "status": "ongoing",
+          "progress": 170,
+          "progress_element": "instruments",
+          "progress_precision": "less",
+          "progress_goal": 170,
+          "progress_direction": "-",
+          "last_update": "2025.07.10"
+        },
+        {
+          "title": "Step 3 / B",
+          "status": "ongoing",
+          "progress": 170,
+          "progress_element": "instruments",
+          "progress_precision": "less",
+          "progress_goal": 170,
+          "progress_direction": "-",
+          "last_update": "2025.07.10"
+        }
+      ]
     },
     {
       "title": "Reinstalling programs",
@@ -31,18 +69,6 @@
           "emoji": "⚠️"
         }
       ]
-    },
-    {
-      "title": "Changing format of local notes (from Markdown and TXT to Q, my own format)",
-      "description": "Helpful string for Everything: <kbd>&lt;&lt;ext:q&gt;|&lt;ext:md \".q.md\"&gt;&gt; !path:\\VSCodium\\User\\History\\-</kbd>",
-      "emoji": "🗒️",
-      "status": "ongoing",
-      "progress": 423,
-      "progress_goal": 1008,
-      "progress_element": "note files",
-      "progress_precision": true,
-      "progress_direction": "-",
-      "last_update": "2025.07.05"
     },
     {
       "title": "Verifying quality of classic Doctor Who episodes (quick rewatching)",
@@ -79,12 +105,13 @@
         {
           "title": "4th Doctor",
           "status": "ongoing",
-          "progress": 112,
+          "progress": 98,
+          "progress_checkpoint": 112,
           "progress_goal": 186,
           "progress_element": "episodes",
           "progress_precision": true,
           "progress_direction": "-",
-          "last_update": "2025.07.05"
+          "last_update": "2025.07.10"
         },
         {
           "title": "3rd Doctor",
