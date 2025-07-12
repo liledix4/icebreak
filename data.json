@@ -7,13 +7,13 @@
       "description": "Helpful string for Everything: <kbd>&lt;&lt;ext:q&gt;|&lt;ext:md \".q.md\"&gt;&gt; !path:\\VSCodium\\User\\History\\-</kbd>",
       "emoji": "🗒️",
       "status": "ongoing",
-      "progress": 299,
+      "progress": 189,
       "progress_checkpoint": 423,
       "progress_goal": 1008,
       "progress_element": "note files",
       "progress_precision": true,
       "progress_direction": "-",
-      "last_update": "2025.07.11"
+      "last_update": "2025.07.12"
     },
     {
       "title": "Reinstalling virtual musical instruments",

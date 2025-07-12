@@ -52,7 +52,7 @@ h1 {
   border-top: .125em solid #ffffff44;
   border-bottom: .125em solid #00000044;
   box-shadow: 0 .5em 1em #00000066;
-  backdrop-filter: blur( 2em );
+  backdrop-filter: blur( .5em );
   padding: 1em;
   border-radius: 1.5em;
   margin: 0 auto;
