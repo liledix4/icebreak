@@ -6,14 +6,14 @@
       "title": "Changing format of local notes (from Markdown and TXT to Q, my own format)",
       "description": "Helpful string for Everything: <kbd>&lt;&lt;ext:q&gt;|&lt;ext:md \".q.md\"&gt;&gt; !path:\\VSCodium\\User\\History\\-</kbd>",
       "emoji": "🗒️",
-      "status": "ongoing",
-      "progress": 189,
-      "progress_checkpoint": 423,
+      "status": "done",
+      "progress": 0,
+      "progress_checkpoint": 187,
       "progress_goal": 1008,
       "progress_element": "note files",
       "progress_precision": true,
       "progress_direction": "-",
-      "last_update": "2025.07.12"
+      "last_update": "2025.07.13"
     },
     {
       "title": "Reinstalling virtual musical instruments",
