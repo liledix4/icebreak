@@ -1,5 +1,6 @@
 export const config = {
-  jsonDataSource: './data.json',
+  // jsonDataSource: './local/icebreak.json',
+  jsonDataSource: 'https://liledix4.github.io/data/icebreak.json',
     // Path or URL to the JSON file/content. OR an object itself! (if you can replicate the structure that is needed for the script)
     // Location must be accessible for HTTP requests (i.e. it's not blocked by CORS and it's not protected by services like CloudFlare).
   statuses: {
