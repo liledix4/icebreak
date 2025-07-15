@@ -4,7 +4,9 @@ import { replaceKeyword } from './html_replace.js';
 import { addPreview } from './preview.js';
 
 
+const htmlConf = config.html;
 let latestUpdateDate;
+
 
 readTextFile( { url: config.jsonDataSource }, rawData => {
   const json = JSON.parse( rawData );
@@ -17,18 +19,15 @@ readTextFile( { url: config.jsonDataSource }, rawData => {
     weekday: 'long',
   } );
   if ( json.more_to_come && json.more_to_come === true )
-    mainBlock.innerHTML += getHTMLFromTasks( [ {
-      title: 'And more?',
-      emoji: '❓',
-    } ] );
+    mainBlock.innerHTML += getHTMLFromTasks( [ config.and_more ] );
   // addPreview();
 } );
 
 
 function htmlReplace( initialString, replaceTo ) {
-  if ( config.html.defaultReplacement !== undefined )
+  if ( htmlConf.defaultReplacement !== undefined )
     return replaceKeyword(
-      initialString, replaceTo, config.html.defaultReplacement
+      initialString, replaceTo, htmlConf.defaultReplacement
     );
   else
     return replaceKeyword(
@@ -45,98 +44,138 @@ function getHTMLFromTasks( tasksArray ) {
       description: '',
       emoji: '',
       status: '',
+      blockclass: '',
       progress: '',
-      progress_bar: '',
-      last_update: '',
+      lastupdate: '',
       subtasks: '',
     };
 
     if ( task.title )
-      html.title = htmlReplace( config.html.title, task.title );
+      html.title = htmlReplace( htmlConf.title, task.title );
 
     if ( task.description )
-      html.description = htmlReplace( config.html.description, task.description );
+      html.description = htmlReplace( htmlConf.description, task.description );
 
     if ( task.emoji )
-      html.emoji = htmlReplace( config.html.emoji, task.emoji );
+      html.emoji = htmlReplace( htmlConf.emoji, task.emoji );
 
     if ( task.status ) {
-      const statusObjects = Object.keys( config.statuses ).indexOf( task.status );
-      if ( statusObjects >= 0 ) {
+      const statusIsValid = Object.keys( config.statuses ).indexOf( task.status ) >= 0;
+      if ( statusIsValid === true ) {
         const statusObject = config.statuses[ task.status ];
-        html.status = `<div class='status ${ task.status }'>`;
+        html.blockclass += ' ' + task.status;
+        let emoji = '';
         if ( html.emoji.length === 0 )
           html.emoji = statusObject.emoji;
         else
-          html.status += statusObject.emoji;
-        html.status += `<span>${ statusObject.text }</span></div>`;
+          emoji = statusObject.emoji + ' ';
+        html.status = htmlReplace( htmlConf.status, {
+          statusclass: task.status,
+          statustext: htmlReplace( htmlConf.status_text, {
+            emoji: emoji,
+            text: statusObject.text,
+          } ),
+        } );
       }
     }
 
     if ( task.progress !== undefined ) {
-      html.progress = `<span class='number current'>${ task.progress }</span>`;
+      let htmlProgress = {
+        currentnumber: task.progress,
+        diff: '',
+        goal: '',
+        element: '',
+        percentage: '',
+        emoji: '',
+        imprecision: '',
+        progressbar: '',
+        encouragement: '',
+      };
 
       if ( task.progress_checkpoint || task.progress_change ) {
-        let additionalClass = '';
-        let difference = 0;
+        let diffObj = { class: '', diff: 0 };
 
         if ( task.progress_change === undefined )
-          difference = task.progress - task.progress_checkpoint;
+          diffObj.diff = task.progress - task.progress_checkpoint;
         else
-          difference = task.progress_change;
+          diffObj.diff = task.progress_change;
 
-        if ( task.progress_direction === '+' && difference > 0 || task.progress_direction === '-' && difference < 0 )
-          additionalClass = ' positive';
-        else if ( task.progress_direction === '+' && difference < 0 || task.progress_direction === '-' && difference > 0 )
-          additionalClass = ' negative';
+        if ( task.progress_direction === '+' && diffObj.diff > 0 || task.progress_direction === '-' && diffObj.diff < 0 )
+          diffObj.class = ' positive';
+        else if ( task.progress_direction === '+' && diffObj.diff < 0 || task.progress_direction === '-' && diffObj.diff > 0 )
+          diffObj.class = ' negative';
 
-        if ( difference > 0 )
-          difference = '+' + difference;
+        if ( diffObj.diff > 0 )
+          diffObj.diff = '+' + diffObj.diff;
 
-        html.progress += ` <span class='change${ additionalClass }'>${ difference }</span>`;
+        htmlProgress.diff = htmlReplace( htmlConf.progress_difference, diffObj );
       }
+
       if ( task.progress_goal ) {
-        let progressPrefix = '';
+        let goalPrefix = '';
         if ( task.progress_goal_precision && task.progress_goal_precision !== true ) {
           switch ( task.progress_goal_precision ) {
-            case false: progressPrefix = '≈'; break;
-            case 'more': progressPrefix = '>'; break;
-            case 'less': progressPrefix = '<'; break;
+            case  false: goalPrefix = '≈'; break;
+            case 'more': goalPrefix = '>'; break;
+            case 'less': goalPrefix = '<'; break;
           }
         }
-        html.progress = `${ html.progress } out of <b>${ progressPrefix }${ task.progress_goal }</b>`;
+        htmlProgress.goal = htmlReplace( htmlConf.progress_goal, goalPrefix + task.progress_goal );
       }
+
       if ( task.progress_element )
-        html.progress += ' ' + task.progress_element;
+        htmlProgress.element = ' ' + task.progress_element;
+
+      if ( typeof task.progress_encouragement === 'string' )
+        htmlProgress.encouragement = htmlReplace( htmlConf.progress_encouragement, task.progress_encouragement );
+      else if ( task.progress_encouragement === false )
+        htmlProgress.encouragement = '';
+      else
+        htmlProgress.encouragement = htmlReplace( htmlConf.progress_encouragement, config.default.progress_encouragement );
 
       if ( task.progress_precision ) {
         let percentageNumber;
         let percentage = '';
 
         if ( task.progress_precision !== true || !task.progress_goal )
-          html.progress_bar = `<div class='bar imprecise' style='width: 100%'></div>`;
+          htmlProgress.progressbar = htmlReplace( htmlConf.progress_bar,
+            { class: 'imprecise', width: 100 }
+          );
         else {
           if ( task.progress_direction === '-' )
             percentageNumber = ( 1 - task.progress / task.progress_goal ) * 10000;
           else
             percentageNumber = task.progress / task.progress_goal * 10000;
-          percentage = Math.floor( percentageNumber ) / 100 + '%';
-          html.progress_bar = `<div class='bar' style='width: ${ percentage }'></div>`;
+          percentage = Math.floor( percentageNumber ) / 100;
+          htmlProgress.progressbar = htmlReplace( htmlConf.progress_bar,
+            { class: '', width: percentage }
+          );
         }
 
         if ( percentage.length > 0 ) {
-          percentage = `<br>${ percentage }`;
+          htmlProgress.percentage = htmlReplace( htmlConf.progress_percentage, percentage );
         }
 
         switch ( task.progress_precision ) {
-          case true: html.progress = `⛳ ${ html.progress } to go${ percentage }`; break;
-          case 'more': html.progress = `🎲 More than ${ html.progress } to go${ percentage }`; break;
-          case 'less': html.progress = `🎲 Less than ${ html.progress } to go${ percentage }`; break;
-          case false: html.progress = `🎲 Imprecisely ${ html.progress } to go${ percentage }`; break;
+          case   true:
+            htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '⛳' );
+            break;
+          case 'more':
+            htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '🎲' );
+            htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'More than' );
+            break;
+          case 'less':
+            htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '🎲' );
+            htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'Less than' );
+            break;
+          case  false:
+            htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '🎲' );
+            htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'Imprecisely' );
+            break;
         }
       }
 
-      html.progress = `<div class='progress'>${ html.progress_bar }${ html.progress }</div>`;
+      html.progress = htmlReplace( htmlConf.progress, htmlProgress );
     }
 
     if ( task.last_update ) {
@@ -149,24 +188,16 @@ function getHTMLFromTasks( tasksArray ) {
         weekday: 'short',
       } );
 
-      html.last_update = htmlReplace( config.html.last_update, dateString );
+      html.lastupdate = htmlReplace( htmlConf.last_update, dateString );
 
       if ( latestUpdateDate === undefined || latestUpdateDate.getTime() < date.getTime() )
         latestUpdateDate = date;
     }
 
     if ( task.subtasks )
-      html.subtasks = htmlReplace( config.html.subtasks, getHTMLFromTasks( task.subtasks ) );
+      html.subtasks = htmlReplace( htmlConf.subtasks, getHTMLFromTasks( task.subtasks ) );
 
-    taskHTML += htmlReplace( config.html.taskBlock, {
-      emoji: html.emoji,
-      title: html.title,
-      description: html.description,
-      lastupdate: html.last_update,
-      status: html.status,
-      progress: html.progress,
-      subtasks: html.subtasks,
-    } );
+    taskHTML += htmlReplace( htmlConf.taskBlock, html );
 
   } );
 

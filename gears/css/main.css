@@ -7,11 +7,12 @@
   color: #ffffff;
   text-shadow: 0 .125em .25em #00000088;
 }
-html {
+:root {
   color: #ffffff;
   text-shadow: 0 .125em .25em #00000088;
   font-family: 'Exo 2', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   word-break: break-word;
+  --background-hue: 270deg;
 }
 body {
   background-color: #000000;
@@ -28,11 +29,16 @@ body > .bg_blurred {
   background-attachment: fixed;
   z-index: -1;
 }
+body > .bg {
+  filter: hue-rotate( var( --background-hue ) );
+}
 body > .bg_blurred {
-  filter: blur( 3em ) saturate( 1.5 );
+  filter: blur( 3em ) saturate( 1.5 ) hue-rotate( var( --background-hue ) );
   transform: scale( 1.3 );
   opacity: .9;
 }
+
+
 h1 {
   font-size: 3em;
   margin: 0;
@@ -48,6 +54,8 @@ h1 {
 
 
 .icebreak_block {
+  background-size: 100% 8rem;
+  background-repeat: no-repeat;
   background-color: #00000044;
   border-top: .125em solid #ffffff44;
   border-bottom: .125em solid #00000044;
@@ -59,13 +67,28 @@ h1 {
   margin-bottom: 2em;
   max-width: 40em;
   overflow: hidden;
-  transition: background .4s;
+  transition: background-color .2s;
 }
 .icebreak_block.task {
   display: flex;
   flex-direction: column;
   gap: .5em;
   text-align: left;
+}
+.icebreak_block.task.ongoing {
+  background-image: linear-gradient( 0deg, #00944400, #008394aa );
+}
+.icebreak_block.task.done {
+  background-image: linear-gradient( 0deg, #00944400, #009444aa );
+}
+.icebreak_block.task.stopped {
+  background-image: linear-gradient( 0deg, #00944400, #c74a1988 );
+}
+.icebreak_block.task.slowdown {
+  background-image: linear-gradient( 0deg, #00944400, #d135f888 );
+}
+.icebreak_block.task.improve {
+  background-image: linear-gradient( 0deg, #00944400, #35f8ce88 );
 }
 .icebreak_block .icebreak_block {
   backdrop-filter: none;
@@ -81,6 +104,34 @@ h1 {
 }
 
 
+.icebreak_block a {
+  display: inline-block;
+  color: inherit;
+  border: .25em solid #ffffff33;
+  box-shadow: 0 .25em .5em #00000044,
+        inset 0 .25em .5em #00000044;
+  padding: .25em .5em;
+  border-radius: .5em;
+  text-decoration: none;
+  transition: background-color .2s, color .2s, transform .2s, box-shadow .2s, border .2s;
+}
+.icebreak_block a:hover {
+  background-color: #009444;
+  box-shadow: 0 .25em .5em #00000044;
+  color: #ffffff;
+  border-style: dashed;
+  transform: scale( 1.1 );
+  z-index: 4;
+}
+.icebreak_block a:active {
+  background-color: #009444;
+  box-shadow: 0 0 2em #009444;
+  border-color: #ffffff66;
+  transform: scale( .95 );
+  z-index: 4;
+}
+
+
 .icebreak_block.main {
   text-align: center;
 }
@@ -89,7 +140,7 @@ h1 {
 }
 .icebreak_block.main h1,
 .icebreak_block.main p {
-  margin: 0;
+  margin: .75rem;
 }
 
 

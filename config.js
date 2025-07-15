@@ -11,14 +11,23 @@ export const config = {
     done: { text: 'Done', emoji: '✅' },
     pending: { text: 'Pending', emoji: '⏱️' },
     improve: { text: 'Done, but improvements can be possible', emoji: '⬆️' },
+    slowdown: { text: 'Slowed down', emoji: '⏯️' },
+  },
+  and_more: {
+    title: 'And more?',
+    description: 'This list is far from being complete. More tasks will be added later, so stay tuned.',
+    emoji: '❓',
   },
   mainWrapper: '#main_wrapper',
     // Query selector of an HTML element where the script must add new blocks.
     // See CSS selectors: https://developer.mozilla.org/docs/Web/CSS/CSS_selectors
+  default: {
+    progress_encouragement: 'to go',
+  },
   html: {
     defaultReplacement: '{{REPLACE}}',
     taskBlock: `
-      <div class='icebreak_block task'>
+      <div class='icebreak_block task{{BLOCKCLASS}}'>
         <div class='info'>
           <div class='emoji'>{{EMOJI}}</div>
           <div class='center'>
@@ -31,13 +40,25 @@ export const config = {
         {{PROGRESS}}
         {{SUBTASKS}}
       </div>`,
-    title: "<div class='title'>{{REPLACE}}</div>",
-    description: "<div class='description'>{{REPLACE}}</div>",
+    title: '<div class="title">{{REPLACE}}</div>',
+    description: '<div class="description">{{REPLACE}}</div>',
     emoji: '{{REPLACE}}',
-    status: "",
-    progress: "",
-    progress_bar: "",
-    last_update: "<div class='last_update'>Last update:<br>{{REPLACE}}</div>",
-    subtasks: "<div class='subtasks'>{{REPLACE}}</div>",
+    status: '<div class="status {{STATUSCLASS}}">{{STATUSTEXT}}</div>',
+    status_text: '{{EMOJI}}<span>{{TEXT}}</span>',
+    progress: `
+      <div class="progress">
+        {{PROGRESSBAR}}
+        {{EMOJI}}{{IMPRECISION}}<span class="number current">{{CURRENTNUMBER}}{{DIFF}}</span>{{GOAL}}{{ELEMENT}}{{ENCOURAGEMENT}}{{PERCENTAGE}}
+      </div>`,
+    progress_difference: ' <span class="change{{CLASS}}">{{DIFF}}</span>',
+    progress_goal: ' out of <b>{{REPLACE}}</b>',
+    progress_element: ' {{REPLACE}}',
+    progress_percentage: '<br>{{REPLACE}}%',
+    progress_emoji: '{{REPLACE}} ',
+    progress_imprecision: '{{REPLACE}} ',
+    progress_encouragement: ' {{REPLACE}}',
+    progress_bar: '<div class="bar{{CLASS}}" style="width: {{WIDTH}}%"></div>',
+    last_update: '<div class="last_update">Last update:<br>{{REPLACE}}</div>',
+    subtasks: '<div class="subtasks">{{REPLACE}}</div>',
   },
 }
