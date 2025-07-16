@@ -1,9 +1,15 @@
 export const config = {
-  jsonDataSource: {
+  file_sources: {
     // Path or URL to the JSON file/content. OR an object itself! (if you can replicate the structure that is needed for the script)
     // Location must be accessible for HTTP requests (i.e. it's not blocked by CORS and it's not protected by services like CloudFlare).
-    local: './local/icebreak.json',
-    remote: 'https://liledix4.github.io/data/icebreak.json',
+    local: {
+      version: './version',
+      todo_data: './local/icebreak.json',
+    },
+    remote: {
+      version: './version',
+      todo_data: 'https://liledix4.github.io/data/icebreak.json',
+    },
   },
   statuses: {
     // List of statuses that tasks can have.
@@ -21,15 +27,15 @@ export const config = {
     description: 'This list is far from being complete. More tasks will be added later, so stay tuned.',
     emoji: '❓',
   },
-  mainWrapper: '#main_wrapper',
+  main_wrapper: '#main_wrapper',
     // Query selector of an HTML element where the script must add new blocks.
     // See CSS selectors: https://developer.mozilla.org/docs/Web/CSS/CSS_selectors
   default: {
     progress_encouragement: 'to go',
   },
   html: {
-    defaultReplacement: '{{REPLACE}}',
-    taskBlock: `
+    default_replacement: '{{REPLACE}}',
+    task_block: `
       <div class='icebreak_block task{{BLOCKCLASS}}'>
         <div class='info'>
           <div class='emoji'>{{EMOJI}}</div>

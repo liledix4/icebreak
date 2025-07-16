@@ -1,24 +1,29 @@
 import { config } from '../../config.js';
-import { configLocal } from '../../config-local.js';
+import { config_local } from '../../config_local.js';
 import { readTextFile } from '../modules/js_xhr_ajax/xhr_ajax.min.js';
 import { replaceKeyword } from './html_replace.js';
 import { addPreview } from './preview.js';
 
 
-let jsonSource;
+let file_sources;
 const htmlConf = config.html;
 let latestUpdateDate;
 
 
-if ( configLocal.localMode === true )
-  jsonSource = config.jsonDataSource.local;
+if ( config_local.localMode === true )
+  file_sources = config.file_sources.local;
 else
-  jsonSource = config.jsonDataSource.remote;
+  file_sources = config.file_sources.remote;
 
 
-readTextFile( { url: jsonSource }, rawData => {
+readTextFile( { url: file_sources.version }, file_content => {
+  document.querySelector( '.version_number' ).innerText = file_content;
+} );
+
+
+readTextFile( { url: file_sources.todo_data }, rawData => {
   const json = JSON.parse( rawData );
-  const mainBlock = document.querySelector( config.mainWrapper );
+  const mainBlock = document.querySelector( config.main_wrapper );
   mainBlock.innerHTML += getHTMLFromTasks( json.tasks );
   document.querySelector( '#main_wrapper .icebreak_block.main .latest_update' ).innerText = latestUpdateDate.toLocaleDateString( undefined, {
     year: 'numeric',
@@ -33,9 +38,9 @@ readTextFile( { url: jsonSource }, rawData => {
 
 
 function htmlReplace( initialString, replaceTo ) {
-  if ( htmlConf.defaultReplacement !== undefined )
+  if ( htmlConf.default_replacement !== undefined )
     return replaceKeyword(
-      initialString, replaceTo, htmlConf.defaultReplacement
+      initialString, replaceTo, htmlConf.default_replacement
     );
   else
     return replaceKeyword(
@@ -203,7 +208,7 @@ function getHTMLFromTasks( tasksArray ) {
     if ( task.subtasks )
       html.subtasks = htmlReplace( htmlConf.subtasks, getHTMLFromTasks( task.subtasks ) );
 
-    taskHTML += htmlReplace( htmlConf.taskBlock, html );
+    taskHTML += htmlReplace( htmlConf.task_block, html );
 
   } );
 
