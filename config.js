@@ -51,7 +51,7 @@ export const config = {
     progress: `
       <div class="progress">
         {{PROGRESSBAR}}
-        {{EMOJI}}{{IMPRECISION}}<span class="number current">{{CURRENTNUMBER}}{{DIFF}}</span>{{GOAL}}{{ELEMENT}}{{ENCOURAGEMENT}}{{PERCENTAGE}}
+        {{EMOJI}}{{IMPRECISION}}<span class="number current">{{CURRENTNUMBER}}</span>{{DIFF}}{{GOAL}}{{ELEMENT}}{{ENCOURAGEMENT}}{{PERCENTAGE}}
       </div>`,
     progress_difference: ' <span class="change{{CLASS}}">{{DIFF}}</span>',
     progress_goal: ' out of <b>{{REPLACE}}</b>',
