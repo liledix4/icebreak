@@ -1,30 +1,30 @@
-export function replaceKeyword( initialString, replaceTo, keyword = '{{REPLACE}}' ) {
-  function replaceSingleKeyword( kw, to ) {
-    initialString = initialString.replaceAll(
-      transformAlphabeticKeyword( kw ), to
+export function replace_keyword( initial_string, replace_to, keyword = '{{REPLACE}}' ) {
+  function replace_single_keyword( kw, to ) {
+    initial_string = initial_string.replaceAll(
+      transform_alphabetic_keyword( kw ), to
     );
   }
-  function transformAlphabeticKeyword( kw ) {
+  function transform_alphabetic_keyword( kw ) {
     if ( kw.match( /^[A-Za-z]/ ) )
       return `{{${ kw.toUpperCase() }}}`;
     else return kw;
   }
 
-  if ( typeof replaceTo === 'string' && typeof keyword === 'string' )
-    replaceSingleKeyword( keyword, replaceTo );
-  else if ( typeof replaceTo === 'object' ) {
-    if ( replaceTo.length )
-      replaceTo.forEach( rt => {
+  if ( typeof replace_to === 'string' && typeof keyword === 'string' )
+    replace_single_keyword( keyword, replace_to );
+  else if ( typeof replace_to === 'object' ) {
+    if ( replace_to.length )
+      replace_to.forEach( rt => {
         if ( typeof rt === 'object' )
-          replaceSingleKeyword( rt[ 0 ], rt[ 1 ] );
+          replace_single_keyword( rt[ 0 ], rt[ 1 ] );
         else if ( typeof rt === 'string' && typeof keyword === 'string' )
-          replaceSingleKeyword( rt[ 0 ], keyword );
+          replace_single_keyword( rt[ 0 ], keyword );
       } );
     else
-      Object.keys( replaceTo ).forEach(
-        key => replaceSingleKeyword( key, replaceTo[ key ] )
+      Object.keys( replace_to ).forEach(
+        key => replace_single_keyword( key, replace_to[ key ] )
       );
   }
 
-  return initialString;
+  return initial_string;
 }

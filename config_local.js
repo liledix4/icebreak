@@ -1,3 +1,3 @@
 export const config_local = {
-  localMode: false,
+  local_mode: false,
 };

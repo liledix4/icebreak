@@ -1,16 +1,16 @@
 import { config } from '../../config.js';
 import { config_local } from '../../config_local.js';
 import { readTextFile } from '../modules/js_xhr_ajax/xhr_ajax.min.js';
-import { replaceKeyword } from './html_replace.js';
-import { addPreview } from './preview.js';
+import { replace_keyword } from './html_replace.js';
+import { add_preview } from './preview.js';
 
 
 let file_sources;
-const htmlConf = config.html;
-let latestUpdateDate;
+let latest_update_date;
+const html_config = config.html;
 
 
-if ( config_local.localMode === true )
+if ( config_local.local_mode === true )
   file_sources = config.file_sources.local;
 else
   file_sources = config.file_sources.remote;
@@ -21,37 +21,38 @@ readTextFile( { url: file_sources.version }, file_content => {
 } );
 
 
-readTextFile( { url: file_sources.todo_data }, rawData => {
-  const json = JSON.parse( rawData );
-  const mainBlock = document.querySelector( config.main_wrapper );
-  mainBlock.innerHTML += getHTMLFromTasks( json.tasks );
-  document.querySelector( '#main_wrapper .icebreak_block.main .latest_update' ).innerText = latestUpdateDate.toLocaleDateString( undefined, {
+readTextFile( { url: file_sources.todo_data }, file_content => {
+  const json = JSON.parse( file_content );
+  const main_block = document.querySelector( config.main_wrapper );
+  main_block.innerHTML += get_html_from_tasks( json.tasks );
+  document.querySelector( '#main_wrapper .icebreak_block.main .latest_update' ).innerText = latest_update_date.toLocaleDateString( undefined, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     weekday: 'long',
   } );
   if ( json.more_to_come && json.more_to_come === true )
-    mainBlock.innerHTML += getHTMLFromTasks( [ config.and_more ] );
-  // addPreview();
+    main_block.innerHTML += get_html_from_tasks( [ config.and_more ] );
+  // add_preview();
 } );
 
 
-function htmlReplace( initialString, replaceTo ) {
-  if ( htmlConf.default_replacement !== undefined )
-    return replaceKeyword(
-      initialString, replaceTo, htmlConf.default_replacement
+function html_replace( initial_string, replace_to ) {
+  if ( html_config.default_replacement !== undefined )
+    return replace_keyword(
+      initial_string, replace_to, html_config.default_replacement
     );
   else
-    return replaceKeyword(
-      initialString, replaceTo
+    return replace_keyword(
+      initial_string, replace_to
     );
 }
 
 
-function getHTMLFromTasks( tasksArray ) {
-  let taskHTML = '';
-  tasksArray.forEach( task => {
+function get_html_from_tasks( tasks_array ) {
+  let task_html = '';
+
+  tasks_array.forEach( task => {
     let html = {
       title: '',
       description: '',
@@ -64,36 +65,36 @@ function getHTMLFromTasks( tasksArray ) {
     };
 
     if ( task.title )
-      html.title = htmlReplace( htmlConf.title, task.title );
+      html.title = html_replace( html_config.title, task.title );
 
     if ( task.description )
-      html.description = htmlReplace( htmlConf.description, task.description );
+      html.description = html_replace( html_config.description, task.description );
 
     if ( task.emoji )
-      html.emoji = htmlReplace( htmlConf.emoji, task.emoji );
+      html.emoji = html_replace( html_config.emoji, task.emoji );
 
     if ( task.status ) {
-      const statusIsValid = Object.keys( config.statuses ).indexOf( task.status ) >= 0;
-      if ( statusIsValid === true ) {
-        const statusObject = config.statuses[ task.status ];
+      const status_is_valid = Object.keys( config.statuses ).indexOf( task.status ) >= 0;
+      if ( status_is_valid === true ) {
+        const status_object = config.statuses[ task.status ];
         html.blockclass += ' ' + task.status;
         let emoji = '';
         if ( html.emoji.length === 0 )
-          html.emoji = statusObject.emoji;
+          html.emoji = status_object.emoji;
         else
-          emoji = statusObject.emoji + ' ';
-        html.status = htmlReplace( htmlConf.status, {
+          emoji = status_object.emoji + ' ';
+        html.status = html_replace( html_config.status, {
           statusclass: task.status,
-          statustext: htmlReplace( htmlConf.status_text, {
+          statustext: html_replace( html_config.status_text, {
             emoji: emoji,
-            text: statusObject.text,
+            text: status_object.text,
           } ),
         } );
       }
     }
 
     if ( task.progress !== undefined ) {
-      let htmlProgress = {
+      let html_progress = {
         currentnumber: task.progress,
         diff: '',
         goal: '',
@@ -104,113 +105,113 @@ function getHTMLFromTasks( tasksArray ) {
         progressbar: '',
         encouragement: '',
       };
-      let htmlProgressBar = {
+      let html_progress_bar = {
         class: '',
         width: 0,
       };
       let percentage = '';
 
       if ( task.progress_checkpoint || task.progress_change ) {
-        let diffObj = { class: '', diff: 0 };
+        let diff_obj = { class: '', diff: 0 };
 
         if ( task.progress_change === undefined )
-          diffObj.diff = task.progress - task.progress_checkpoint;
+          diff_obj.diff = task.progress - task.progress_checkpoint;
         else
-          diffObj.diff = task.progress_change;
+          diff_obj.diff = task.progress_change;
 
-        if ( task.progress_direction === '+' && diffObj.diff > 0 || task.progress_direction === '-' && diffObj.diff < 0 )
-          diffObj.class = ' positive';
-        else if ( task.progress_direction === '+' && diffObj.diff < 0 || task.progress_direction === '-' && diffObj.diff > 0 )
-          diffObj.class = ' negative';
+        if ( task.progress_direction === '+' && diff_obj.diff > 0 || task.progress_direction === '-' && diff_obj.diff < 0 )
+          diff_obj.class = ' positive';
+        else if ( task.progress_direction === '+' && diff_obj.diff < 0 || task.progress_direction === '-' && diff_obj.diff > 0 )
+          diff_obj.class = ' negative';
 
-        if ( diffObj.diff > 0 )
-          diffObj.diff = '+' + diffObj.diff;
+        if ( diff_obj.diff > 0 )
+          diff_obj.diff = '+' + diff_obj.diff;
 
-        htmlProgress.diff = htmlReplace( htmlConf.progress_difference, diffObj );
+        html_progress.diff = html_replace( html_config.progress_difference, diff_obj );
       }
 
       if ( task.progress_goal ) {
-        let goalPrefix = '';
+        let goal_prefix = '';
         if ( task.progress_goal_precision && task.progress_goal_precision !== true ) {
           switch ( task.progress_goal_precision ) {
-            case  false: goalPrefix = '≈'; break;
-            case 'more': goalPrefix = '>'; break;
-            case 'less': goalPrefix = '<'; break;
+            case  false: goal_prefix = '≈'; break;
+            case 'more': goal_prefix = '>'; break;
+            case 'less': goal_prefix = '<'; break;
           }
         }
-        htmlProgress.goal = htmlReplace( htmlConf.progress_goal, goalPrefix + task.progress_goal );
+        html_progress.goal = html_replace( html_config.progress_goal, goal_prefix + task.progress_goal );
       }
 
       if ( task.progress_element )
-        htmlProgress.element = ' ' + task.progress_element;
+        html_progress.element = ' ' + task.progress_element;
 
       if ( typeof task.progress_encouragement === 'string' )
-        htmlProgress.encouragement = htmlReplace( htmlConf.progress_encouragement, task.progress_encouragement );
+        html_progress.encouragement = html_replace( html_config.progress_encouragement, task.progress_encouragement );
       else if ( task.progress_encouragement === false )
-        htmlProgress.encouragement = '';
+        html_progress.encouragement = '';
       else
-        htmlProgress.encouragement = htmlReplace( htmlConf.progress_encouragement, config.default.progress_encouragement );
+        html_progress.encouragement = html_replace( html_config.progress_encouragement, config.default.progress_encouragement );
 
       if ( task.progress_precision !== true || task.progress_goal_precision !== undefined && task.progress_goal_precision !== null && task.progress_goal_precision !== true ) {
-        htmlProgressBar.class = ' imprecise';
-        htmlProgressBar.width = 100;
+        html_progress_bar.class = ' imprecise';
+        html_progress_bar.width = 100;
       }
 
       if ( task.progress_goal !== undefined ) {
-        let percentageNumber;
+        let percentage_number;
 
         if ( task.progress_direction === '-' )
-          percentageNumber = ( 1 - task.progress / task.progress_goal ) * 10000;
+          percentage_number = ( 1 - task.progress / task.progress_goal ) * 10000;
         else
-          percentageNumber = task.progress / task.progress_goal * 10000;
+          percentage_number = task.progress / task.progress_goal * 10000;
 
-        percentage = Math.floor( percentageNumber ) / 100;
-        htmlProgressBar.width = percentage;
+        percentage = Math.floor( percentage_number ) / 100;
+        html_progress_bar.width = percentage;
       }
 
-      htmlProgress.progressbar = htmlReplace( htmlConf.progress_bar, htmlProgressBar );
+      html_progress.progressbar = html_replace( html_config.progress_bar, html_progress_bar );
 
       if ( percentage.length > 0 ) {
-        htmlProgress.percentage = htmlReplace( htmlConf.progress_percentage, percentage );
+        html_progress.percentage = html_replace( html_config.progress_percentage, percentage );
       }
 
       if ( task.progress_precision === true && ( task.progress_goal_precision === true || task.progress_goal_precision === undefined || task.progress_goal_precision === null ) )
-        htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '⛳' );
+        html_progress.emoji = html_replace( html_config.progress_emoji, '⛳' );
       else
-        htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '🎲' );
+        html_progress.emoji = html_replace( html_config.progress_emoji, '🎲' );
 
       switch ( task.progress_precision ) {
         case  true : break;
-        case 'more': htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'More than' ); break;
-        case 'less': htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'Less than' ); break;
-        default:     htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'Imprecisely' );
+        case 'more': html_progress.imprecision = html_replace( html_config.progress_imprecision, 'More than' ); break;
+        case 'less': html_progress.imprecision = html_replace( html_config.progress_imprecision, 'Less than' ); break;
+        default:     html_progress.imprecision = html_replace( html_config.progress_imprecision, 'Imprecisely' );
       }
 
-      html.progress = htmlReplace( htmlConf.progress, htmlProgress );
+      html.progress = html_replace( html_config.progress, html_progress );
     }
 
     if ( task.last_update ) {
       const d = task.last_update.split( '.' );
       const date = new Date( d[0], d[1] - 1, d[2] );
-      const dateString = date.toLocaleDateString( undefined, {
+      const date_string = date.toLocaleDateString( undefined, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         weekday: 'short',
       } );
 
-      html.lastupdate = htmlReplace( htmlConf.last_update, dateString );
+      html.lastupdate = html_replace( html_config.last_update, date_string );
 
-      if ( latestUpdateDate === undefined || latestUpdateDate.getTime() < date.getTime() )
-        latestUpdateDate = date;
+      if ( latest_update_date === undefined || latest_update_date.getTime() < date.getTime() )
+        latest_update_date = date;
     }
 
     if ( task.subtasks )
-      html.subtasks = htmlReplace( htmlConf.subtasks, getHTMLFromTasks( task.subtasks ) );
+      html.subtasks = html_replace( html_config.subtasks, get_html_from_tasks( task.subtasks ) );
 
-    taskHTML += htmlReplace( htmlConf.task_block, html );
+    task_html += html_replace( html_config.task_block, html );
 
   } );
 
-  return taskHTML;
+  return task_html;
 }
