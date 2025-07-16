@@ -231,13 +231,13 @@ h1 {
   box-shadow: none;
   background-color: transparent;
   background-image: url( '../images/progress_imprecise.svg' );
-  background-size: calc( 100% / 7 ) 100%;
-  animation: progress_bar_imprecise 20s linear infinite;
+  background-size: 5rem 100%;
+  animation: progress_bar_imprecise 5s linear infinite;
   opacity: .4;
 }
 @keyframes progress_bar_imprecise {
   0% { background-position: 0% center; }
-  100% { background-position: 100% center; }
+  100% { background-position: 5rem center; }
 }
 .icebreak_block.task > .subtasks {
   padding: .5em;

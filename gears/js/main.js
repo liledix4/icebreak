@@ -99,6 +99,11 @@ function getHTMLFromTasks( tasksArray ) {
         progressbar: '',
         encouragement: '',
       };
+      let htmlProgressBar = {
+        class: '',
+        width: 0,
+      };
+      let percentage = '';
 
       if ( task.progress_checkpoint || task.progress_change ) {
         let diffObj = { class: '', diff: 0 };
@@ -141,46 +146,39 @@ function getHTMLFromTasks( tasksArray ) {
       else
         htmlProgress.encouragement = htmlReplace( htmlConf.progress_encouragement, config.default.progress_encouragement );
 
-      if ( task.progress_precision ) {
+      if ( task.progress_precision !== true || task.progress_goal_precision !== undefined && task.progress_goal_precision !== null && task.progress_goal_precision !== true ) {
+        htmlProgressBar.class = ' imprecise';
+        htmlProgressBar.width = 100;
+      }
+
+      if ( task.progress_goal !== undefined ) {
         let percentageNumber;
-        let percentage = '';
 
-        if ( task.progress_precision !== true || !task.progress_goal )
-          htmlProgress.progressbar = htmlReplace( htmlConf.progress_bar,
-            { class: 'imprecise', width: 100 }
-          );
-        else {
-          if ( task.progress_direction === '-' )
-            percentageNumber = ( 1 - task.progress / task.progress_goal ) * 10000;
-          else
-            percentageNumber = task.progress / task.progress_goal * 10000;
-          percentage = Math.floor( percentageNumber ) / 100;
-          htmlProgress.progressbar = htmlReplace( htmlConf.progress_bar,
-            { class: '', width: percentage }
-          );
-        }
+        if ( task.progress_direction === '-' )
+          percentageNumber = ( 1 - task.progress / task.progress_goal ) * 10000;
+        else
+          percentageNumber = task.progress / task.progress_goal * 10000;
 
-        if ( percentage.length > 0 ) {
-          htmlProgress.percentage = htmlReplace( htmlConf.progress_percentage, percentage );
-        }
+        percentage = Math.floor( percentageNumber ) / 100;
+        htmlProgressBar.width = percentage;
+      }
 
-        switch ( task.progress_precision ) {
-          case   true:
-            htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '⛳' );
-            break;
-          case 'more':
-            htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '🎲' );
-            htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'More than' );
-            break;
-          case 'less':
-            htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '🎲' );
-            htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'Less than' );
-            break;
-          case  false:
-            htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '🎲' );
-            htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'Imprecisely' );
-            break;
-        }
+      htmlProgress.progressbar = htmlReplace( htmlConf.progress_bar, htmlProgressBar );
+
+      if ( percentage.length > 0 ) {
+        htmlProgress.percentage = htmlReplace( htmlConf.progress_percentage, percentage );
+      }
+
+      if ( task.progress_precision === true && ( task.progress_goal_precision === true || task.progress_goal_precision === undefined || task.progress_goal_precision === null ) )
+        htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '⛳' );
+      else
+        htmlProgress.emoji = htmlReplace( htmlConf.progress_emoji, '🎲' );
+
+      switch ( task.progress_precision ) {
+        case  true : break;
+        case 'more': htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'More than' ); break;
+        case 'less': htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'Less than' ); break;
+        default:     htmlProgress.imprecision = htmlReplace( htmlConf.progress_imprecision, 'Imprecisely' );
       }
 
       html.progress = htmlReplace( htmlConf.progress, htmlProgress );
