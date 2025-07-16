@@ -1,14 +1,22 @@
 import { config } from '../../config.js';
+import { configLocal } from '../../config-local.js';
 import { readTextFile } from '../modules/js_xhr_ajax/xhr_ajax.min.js';
 import { replaceKeyword } from './html_replace.js';
 import { addPreview } from './preview.js';
 
 
+let jsonSource;
 const htmlConf = config.html;
 let latestUpdateDate;
 
 
-readTextFile( { url: config.jsonDataSource }, rawData => {
+if ( configLocal.localMode === true )
+  jsonSource = config.jsonDataSource.local;
+else
+  jsonSource = config.jsonDataSource.remote;
+
+
+readTextFile( { url: jsonSource }, rawData => {
   const json = JSON.parse( rawData );
   const mainBlock = document.querySelector( config.mainWrapper );
   mainBlock.innerHTML += getHTMLFromTasks( json.tasks );

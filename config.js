@@ -1,8 +1,10 @@
 export const config = {
-  // jsonDataSource: './local/icebreak.json',
-  jsonDataSource: 'https://liledix4.github.io/data/icebreak.json',
+  jsonDataSource: {
     // Path or URL to the JSON file/content. OR an object itself! (if you can replicate the structure that is needed for the script)
     // Location must be accessible for HTTP requests (i.e. it's not blocked by CORS and it's not protected by services like CloudFlare).
+    local: './local/icebreak.json',
+    remote: 'https://liledix4.github.io/data/icebreak.json',
+  },
   statuses: {
     // List of statuses that tasks can have.
     // Object keys work as values for task statuses in JSON, you can change them freely.
